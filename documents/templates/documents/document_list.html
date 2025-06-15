@@ -1,0 +1,63 @@
+{% extends 'documents/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="filters">
+        <div class="alphabet-filter">
+            <strong>Filter by Letter:</strong>
+            {% for letter in letters %}
+                <a href="?letter={{ letter }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}" 
+                   class="{% if selected_letter == letter %}active{% endif %}">{{ letter }}</a>
+            {% endfor %}
+        </div>
+        <div class="year-filter">
+            <strong>Filter by Year:</strong>
+            {% for year in years %}
+                <a href="?year={{ year }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}" 
+                   class="{% if selected_year|stringformat:'s' == year|stringformat:'s' %}active{% endif %}">{{ year }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="document-list">
+        <h2>Documents ({{ documents.paginator.count }})</h2>
+        {% for document in documents %}
+            <div class="document-item" onclick="window.location.href='{% url 'documents:document_view' document.id %}'" data-document-id="{{ document.id }}">
+                <h3>{{ document.title }}</h3>
+                <p>Type: {{ document.get_document_type_display }}</p>
+                <p>Year: {{ document.year }}</p>
+                <p>{{ document.content|truncatewords:30 }}</p>
+                {% if document.pdf_file %}
+                    <div class="document-actions">
+                        <a href="{% url 'documents:document_view' document.id %}" class="btn btn-view">View Document</a>
+                        <a href="{{ document.pdf_file.url }}" download class="btn btn-download">Download</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No documents found.</p>
+        {% endfor %}
+        
+        {% if documents.has_other_pages %}
+            <div class="pagination">
+                {% if documents.has_previous %}
+                    <a href="?page={{ documents.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}" class="btn btn-pagination">Previous</a>
+                {% endif %}
+                
+                {% for num in documents.paginator.page_range %}
+                    {% if documents.number == num %}
+                        <span class="btn btn-pagination active">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}" class="btn btn-pagination">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if documents.has_next %}
+                    <a href="?page={{ documents.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}" class="btn btn-pagination">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

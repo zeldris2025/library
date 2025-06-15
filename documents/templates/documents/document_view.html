@@ -1,0 +1,23 @@
+{% extends 'documents/base.html' %}
+{% load static %}
+
+{% block title %}{{ document.title }} - View{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="document-view">
+        <h2>{{ document.title }} ({{ document.get_document_type_display }}) - {{ document.year }}</h2>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% elif document.pdf_file %}
+            <div class="pdf-viewer">
+                <iframe src="{{ document.pdf_file.url }}" width="100%" height="600px"></iframe>
+            </div>
+            <div class="document-actions">
+                <a href="{{ document.pdf_file.url }}" download class="btn btn-download">Download</a>
+                <a href="{% url 'documents:document_list' %}" class="btn btn-back">Back to List</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

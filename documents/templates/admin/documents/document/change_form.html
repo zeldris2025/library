@@ -1,0 +1,18 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block admin_change_form_document %}
+    {{ block.super }}
+    <script>
+        function togglePDF(url, button) {
+            var viewer = document.getElementById('pdf-viewer-' + button.parentNode.id.split('-')[1]);
+            if (viewer.style.display === 'none') {
+                viewer.style.display = 'block';
+                button.textContent = 'Close Document';
+            } else {
+                viewer.style.display = 'none';
+                button.textContent = 'Open Document';
+            }
+        }
+    </script>
+{% endblock %}
