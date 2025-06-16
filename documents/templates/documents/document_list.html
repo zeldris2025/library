@@ -21,7 +21,7 @@
     </div>
     
     <div class="document-list">
-        <h2>Documents ({{ documents.paginator.count }})</h2>
+        <Strong>Documents: {{ documents.paginator.count }}</Strong>
         {% for document in documents %}
             <div class="document-item" {% if document.pdf_file %}onclick="window.location.href='{% url 'documents:document_view' document.id %}'"{% endif %} data-document-id="{{ document.id }}">
                 <h3>{{ document.title }}</h3>
