@@ -23,7 +23,7 @@
     <div class="document-list">
         <h2>Documents ({{ documents.paginator.count }})</h2>
         {% for document in documents %}
-            <div class="document-item" onclick="window.location.href='{% url 'documents:document_view' document.id %}'" data-document-id="{{ document.id }}">
+            <div class="document-item" {% if document.pdf_file %}onclick="window.location.href='{% url 'documents:document_view' document.id %}'"{% endif %} data-document-id="{{ document.id }}">
                 <h3>{{ document.title }}</h3>
                 <p>Type: {{ document.get_document_type_display }}</p>
                 <p>Year: {{ document.year }}</p>
@@ -31,8 +31,10 @@
                 {% if document.pdf_file %}
                     <div class="document-actions">
                         <a href="{% url 'documents:document_view' document.id %}" class="btn btn-view">View Document</a>
-                        <a href="{{ document.pdf_file.url }}" download class="btn btn-download">Download</a>
+                        <a href="{{ document.pdf_file.url }}" download class="btn btn-download">Download PDF</a>
                     </div>
+                {% else %}
+                    <p class="error">No PDF available</p>
                 {% endif %}
             </div>
         {% empty %}
@@ -60,4 +62,5 @@
         {% endif %}
     </div>
 </div>
+{% include 'documents/footer.html' %}
 {% endblock %}

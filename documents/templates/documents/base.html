@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="{% static 'documents/styles.css' %}">
 <body>
     <header>
-        <h1>Legal Information System</h1>
+        <h1>OCLA E-Library System</h1>
     </header>
     <div class="search-container">
         <form method="GET" class="search-form" action="{% url 'documents:document_list' %}">
-            <input type="text" name="q" value="{{ search_query }}" placeholder="Search documents...">
+            <input type="text" name="q" value="{% if search_query is not None %}{{ search_query }}{% else %}{% endif %}" placeholder="Search documents...">
             <select name="type">
                 <option value="">All Types</option>
-                {% for type, name in document_types %}
-                    <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
-                {% endfor %}
+                {% if document_types %}
+                    {% for type, name in document_types %}
+                        <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                {% endif %}
             </select>
             <button type="submit">Search</button>
         </form>

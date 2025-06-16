@@ -1,8 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Document
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import PyPDF2
-import os
 
 def document_list(request):
     documents = Document.objects.all()
@@ -12,34 +10,18 @@ def document_list(request):
     selected_year = request.GET.get('year', '')
     
     if search_query:
-        # Search title and content
         documents = documents.filter(title__icontains=search_query) | documents.filter(content__icontains=search_query)
-        
-        # Search PDF content
-        pdf_matches = []
-        for document in documents:
-            if document.pdf_file:
-                try:
-                    pdf_path = document.pdf_file.path
-                    with open(pdf_path, 'rb') as f:
-                        reader = PyPDF2.PdfReader(f)
-                        text = ''
-                        for page in reader.pages:
-                            extracted = page.extract_text() or ''
-                            text += extracted
-                        if search_query.lower() in text.lower():
-                            pdf_matches.append(document.id)
-                except Exception:
-                    continue
-        if pdf_matches:
-            documents = documents.filter(id__in=pdf_matches) | documents.filter(title__icontains=search_query) | documents.filter(content__icontains=search_query)
     
     if selected_type:
         documents = documents.filter(document_type=selected_type)
     if selected_letter:
         documents = documents.filter(title__istartswith=selected_letter)
     if selected_year:
-        documents = documents.filter(year=selected_year)
+        try:
+            selected_year = int(selected_year)  # Convert to int, no lstrip
+            documents = documents.filter(year=selected_year)
+        except ValueError:
+            pass  # Ignore invalid years
     
     paginator = Paginator(documents, 20)  # 20 documents per page
     page = request.GET.get('page')
@@ -68,6 +50,10 @@ def document_list(request):
 
 def document_view(request, pk):
     document = get_object_or_404(Document, pk=pk)
-    if not document.pdf_file:
-        return render(request, 'documents/document_view.html', {'document': document, 'error': 'No PDF available.'})
-    return render(request, 'documents/document_view.html', {'document': document})
+    context = {
+        'document': document,
+        'search_query': request.GET.get('q', ''),
+        'document_types': Document.DOCUMENT_TYPES,
+        'selected_type': request.GET.get('type', ''),
+    }
+    return render(request, 'documents/document_view.html', context)

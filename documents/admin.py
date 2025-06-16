@@ -26,12 +26,32 @@ class DocumentAdmin(ImportExportModelAdmin):
     def pdf_link(self, obj):
         if obj.pdf_file:
             return format_html(
-                '<a href="{}" target="_blank">View PDF</a> | '
-                '<button type="button" onclick="togglePDF(\'{}\', this)">Open Document</button>'
-                '<div id="pdf-viewer-{}" style="display:none; margin-top:10px;">'
-                '<iframe src="{}" width="100%" height="400px"></iframe>'
-                '</div>',
-                obj.pdf_file.url, obj.pdf_file.url, obj.id, obj.pdf_file.url
+                '''
+                <a href="{}" target="_blank">View PDF</a> | 
+                <button type="button" onclick="togglePDF('pdf-viewer-{}', this)">Open Document</button>
+                <div id="pdf-viewer-{}" style="display:none; margin-top:10px;">
+                    <iframe src="{}" width="100%" height="400px"></iframe>
+                </div>
+                ''',
+                obj.pdf_file.url, obj.id, obj.id, obj.pdf_file.url
             )
         return 'No PDF'
     pdf_link.short_description = 'PDF'
+
+    class Media:
+        js = (
+            '''
+            <script>
+            function togglePDF(viewerId, button) {
+                var viewer = document.getElementById(viewerId);
+                if (viewer.style.display === 'none') {
+                    viewer.style.display = 'block';
+                    button.textContent = 'Close Document';
+                } else {
+                    viewer.style.display = 'none';
+                    button.textContent = 'Open Document';
+                }
+            }
+            </script>
+            ''',
+        )
