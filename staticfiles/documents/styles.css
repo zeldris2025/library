@@ -20,6 +20,11 @@ header {
     color: white;
     text-align: center;
     padding: 1em;
+    
+}
+img {
+    width: 150px;
+    height: 150px;
 }
 .search-container {
     max-width: 100%;
@@ -109,7 +114,7 @@ header {
 /* Document list */
 .document-list {
     gap: 50px;
-    margin-bottom: 40px;
+
 }
 
 .document-item {
@@ -293,4 +298,402 @@ header {
     .document-list {
         grid-template-columns: 1fr;
     }
+
+
 }
+.marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background: #f0f0f0;
+            padding: 10px 0;
+            white-space: nowrap;
+        }
+.marquee-text {
+            display: inline-block;
+            font-size: 18px;
+            color: #333;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+        }
+@keyframes marquee {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-100%, 0); }
+        }
+
+        body {
+    font-family: Arial, sans-serif;
+    margin: auto;
+    padding: auto;
+}
+header {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+.container search-container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.search-form {
+    margin-bottom: 20px;
+}
+.search-form input, .search-form select, .search-form button {
+    padding: 8px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+.filters {
+    margin-bottom: 20px;
+}
+.alphabet-filter, .year-filter {
+    margin: 10px 0;
+}
+.alphabet-filter a, .year-filter a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #2c3e50;
+}
+.alphabet-filter a.active, .year-filter a.active {
+    font-weight: bold;
+    color: #e74c3c;
+}
+.document-list {
+    display: grid;
+    gap: 20px;
+}
+.document-item {
+    border:  amministrazione1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.document-list, .document-view {
+    margin-top: 20px;
+}
+
+.document-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.document-item:hover {
+    background-color: #f9f9f9;
+}
+
+.document-item h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.document-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.pdf-viewer {
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.pdf-viewer object,
+.pdf-viewer embed {
+    display: block;
+    width: 100%;
+    height: 600px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.document-actions {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-download {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input, .search-bar select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: #333;
+}
+
+.site-footer {
+    background: #f8f8f8;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    border-top: 1px solid #ddd;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.search-form {
+    margin-bottom: 20px;
+}
+.search-form input, .search-form select, .search-form button {
+    padding: 8px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+.filters {
+    margin-bottom: 20px;
+}
+.alphabet-filter, .year-filter {
+    margin: 10px 0;
+}
+.alphabet-filter a, .year-filter a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #2c3e50;
+}
+.alphabet-filter a.active, .year-filter a.active {
+    font-weight: bold;
+    color: #e74c3c;
+}
+.document-list {
+    display: grid;
+    gap: 20px;
+}
+.document-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+.document-actions {
+    margin-top: 10px;
+}
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-right: 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.btn-view {
+    background-color: #3498db;
+    color: white;
+    border: none;
+}
+.btn-view:hover {
+    background-color: #2980b9;
+}
+.btn-download {
+    background-color: #2ecc71;
+    color: white;
+}
+.btn-download:hover {
+    background-color: #27ae60;
+}
+.pdf-viewer {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+}
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.btn-pagination {
+    padding: 6px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.btn-pagination.active {
+    background-color: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+}
+.btn-pagination:hover {
+    background-color: #f5f5f5;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.document-list, .document-view {
+    margin-top: 20px;
+}
+
+.document-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.document-item:hover {
+    background-color: #f9f9f9;
+}
+
+.document-item h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.document-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.pdf-viewer {
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.pdf-viewer object,
+.pdf-viewer embed {
+    display: block;
+    width: 100%;
+    height: 600px;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.document-actions {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-download {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input, .search-bar select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: #333;
+} 

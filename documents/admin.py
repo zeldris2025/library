@@ -7,7 +7,7 @@ from django.utils.html import format_html
 class DocumentResource(resources.ModelResource):
     class Meta:
         model = Document
-        fields = ('id', 'title', 'document_type', 'year', 'content', 'pdf_file')
+        fields = ('id', 'title', 'document_type', 'date', 'content', 'pdf_file')
         import_id_fields = ('id',)
         skip_unchanged = True
         report_skipped = True
@@ -15,12 +15,12 @@ class DocumentResource(resources.ModelResource):
 @admin.register(Document)
 class DocumentAdmin(ImportExportModelAdmin):
     resource_class = DocumentResource
-    list_display = ('title', 'document_type', 'year', 'created_at', 'pdf_link')
-    list_filter = ('document_type', 'year')
+    list_display = ('title', 'document_type', 'date', 'created_at', 'pdf_link')
+    list_filter = ('document_type', 'date')
     search_fields = ('title', 'content')
-    ordering = ('-year', 'title')
+    ordering = ('-date', 'title')
     date_hierarchy = 'created_at'
-    fields = ('title', 'document_type', 'year', 'content', 'pdf_file')
+    fields = ('title', 'document_type', 'date','content', 'pdf_file')
     change_form_template = 'admin/documents/document/change_form.html'
 
     def pdf_link(self, obj):

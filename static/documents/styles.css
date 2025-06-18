@@ -11,6 +11,8 @@ body {
     background-color: #f4f4f9;
     color: #333;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
 /* Header styling */
@@ -21,60 +23,70 @@ header {
     text-align: center;
     padding: 1em;
 }
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Image styling */
+img {
+    width: 150px;
+    height: 150px;
+}
+
+/* Main container */
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Search container */
 .search-container {
     max-width: 100%;
     margin: 0 auto;
-    padding: 15px;
+    padding: 5px;
     display: flex;
     justify-content: center;
     border-radius: 5px;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
 }
-/* Main container */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 /* Search bar and form */
-.search-bar {
-    text-align: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 100px; /* Increased from 70px */
+.search-bar, .search-form {
+    margin: 20px 0;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-}
-
-.search-form {
-    width: 75%;
-    text-align: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    /* background-color: #fff; */
+    padding: 15px;
+    border-radius: 5px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .search-bar input, .search-bar select,
-.search-form input, .search-form select {
+.search-form input {
     padding: 10px;
-    text-align: center;
-    margin-right: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1em;
     flex: 1;
-    min-width: 250px;
+    min-width: 550px;
+    margin-right: 10px;
+}
+.search-form select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    flex: 1;
+    margin-right: 10px;
+    width: 230px;
 }
 
 .search-bar button, .search-form button {
-    padding: 10px 40px;
-    text-align: center;
+    padding: 10px 20px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -88,7 +100,47 @@ header {
     background-color: #0056b3;
 }
 
+/* Filters */
+.filters {
+    margin-bottom: 20px;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #fff;
+    justify-content: center;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+
+.filters select {
+    padding: 10px;
+    align-items: center;
+    align-content: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    min-width: 120px;
+    flex: 1;
+}
+
+.filters button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.filters button:hover {
+    background-color: #0056b3;
+}
 
 .alphabet-filter, .year-filter {
     margin: 10px 0;
@@ -99,27 +151,37 @@ header {
     text-decoration: none;
     color: #2c3e50;
     font-size: 1em;
+    padding: 5px 8px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.alphabet-filter a:hover, .year-filter a:hover {
+    background-color: #f0f0f0;
 }
 
 .alphabet-filter a.active, .year-filter a.active {
     font-weight: bold;
     color: #e74c3c;
+    background-color: #fce4e4;
 }
 
 /* Document list */
 .document-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 50px;
-
+    margin-top: 20px;
 }
 
 .document-item {
     border: 1px solid #ddd;
     padding: 15px;
-    margin-bottom: 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .document-item:hover {
@@ -158,8 +220,7 @@ header {
     padding: 5px;
 }
 
-.pdf-viewer object,
-.pdf-viewer embed {
+.pdf-viewer object, .pdf-viewer embed {
     display: block;
     width: 100%;
     height: 600px;
@@ -183,12 +244,11 @@ header {
 
 .btn {
     display: inline-block;
-    padding: 5px 10px;
-    margin-right: 10px;
+    padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
-    font-size: 0.75em;
+    font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -247,8 +307,6 @@ header {
     color: white;
     background-color: #e74c3c;
     border-color: #e74c3c;
-    padding: 8px 12px;
-    border-radius: 5px;
 }
 
 /* Footer */
@@ -262,6 +320,28 @@ header {
     margin-top: 20px;
 }
 
+/* Marquee */
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+    background: #f0f0f0;
+    padding: 10px 0;
+    white-space: nowrap;
+}
+
+.marquee-text {
+    display: inline-block;
+    font-size: 18px;
+    color: #333;
+    padding-left: 100%;
+    animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
@@ -273,10 +353,15 @@ header {
     }
 
     .search-bar input, .search-bar select,
-    .search-form input, .search-form select {
+    .search-form input, .search-form select,
+    .filters select {
         width: 100%;
         margin-right: 0;
         margin-bottom: 10px;
+    }
+
+    .filters button {
+        width: 100%;
     }
 
     .document-actions {
@@ -292,5 +377,9 @@ header {
 
     .document-list {
         grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 1.5em;
     }
 }

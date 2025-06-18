@@ -16,7 +16,7 @@ def validate_pdf(file):
     except Exception as e:
         raise ValidationError(f'Invalid PDF: {str(e)}')
 
-from datetime import datetime
+from datetime import datetime 
 
 def upload_to_path(instance, filename):
     today = datetime.today()
@@ -39,10 +39,9 @@ class Document(models.Model):
         ('COM', 'Committee Report'),
     ]
     
-    
     title = models.CharField(max_length=255)
     document_type = models.CharField(max_length=3, choices=DOCUMENT_TYPES)
-    year = models.IntegerField()
+    date = models.DateField(null=True, blank=True)
     content = models.TextField()
     pdf_file = models.FileField(upload_to=upload_to_path, validators=[validate_pdf], blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,8 +51,8 @@ class Document(models.Model):
         indexes = [
             models.Index(fields=['title']),
             models.Index(fields=['document_type']),
-            models.Index(fields=['year']),
+            models.Index(fields=['date']),
         ]
     
     def __str__(self):
-        return f"{self.title} ({self.get_document_type_display()}) - {self.year}"
+        return f"{self.title} ({self.get_document_type_display()}) - {self.date}"
