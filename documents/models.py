@@ -30,13 +30,19 @@ def upload_to_path(instance, filename):
 
 class Document(models.Model):
     DOCUMENT_TYPES = [
-        ('BIL', 'Bill'),
-        ('ACT', 'Act'),
-        ('REG', 'Regulation'),
-        ('ORD', 'Order Paper'),
-        ('SUM', 'Parliamentary Summary'),
-        ('HAN', 'Hansard'),
-        ('COM', 'Committee Report'),
+        ('BIL', 'Bills'),
+        ('ACT', 'Acts & Ordinances'),
+        ('REG', 'Samoa Regulations'),
+        ('ORD', 'Order Papers'),
+        ('SUM', 'Parliamentary Summaries'),
+        ('HAN', 'Hansards Debates | Green Daily'),
+        ('COM', 'Parliamentary Committee Reports'),
+        ('Jou', 'Journals'),
+        ('CUE', 'Cue Papers'),
+        ('COM', 'Parliamentary Committee Reports'),
+        ('CON', 'Constitutional Convention Debates'),
+        ('COV', 'Government Responses'),
+        ('GAZ', 'Western Samoa Gazettes'),
     ]
     
     title = models.CharField(max_length=255)
@@ -44,6 +50,7 @@ class Document(models.Model):
     date = models.DateField(null=True, blank=True)
     content = models.TextField()
     pdf_file = models.FileField(upload_to=upload_to_path, validators=[validate_pdf], blank=True, null=True)
+    pdf_file_samoan = models.FileField(upload_to='documents/pdfs/%Y/%m/%d/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

@@ -3,37 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OCLA E-Library Database{% endblock %}</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'documents/styles.css' %}">
-<body>
-    <header>
-        <img src="{% static 'images/Palemene_logo_3.png' %}" alt="Example Image">   
-        <h1>OCLA E-Library Database</h1>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Marquee animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            padding-right: 2rem;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .marquee-text:hover {
+            animation-play-state: paused;
+        }
+        /* Header gradient */
+        .header-gradient {
+            {% comment %} background: linear-gradient(to right,rgb(133, 0, 0),rgb(241, 130, 130)); {% endcomment %}
+        }
+    </style>
+</head>
+<body class="bg-white text-white py-4">
+    <header class="header-gradient text-black shadow-lg">
+        <div class="container mx-auto px-4 py-6 flex flex-col items-center">
+            <img src="{% static 'images/Palemene_logo_3.png' %}" alt="OCLA Logo" class="h-20 w-auto mb-2">
+            <h1 class="text-3xl font-extrabold tracking-tight">OCLA E-Library Database</h1>
+        </div>
     </header>
-    <div class="marquee-container">
+
+    <div class="marquee-container bg-gray-800 text-white py-4">
         {% for ad in ads %}
-            <span class="marquee-text">{{ ad.text }}</span>
+            <span class="marquee-text text-sm">{{ ad.text }}</span>
         {% empty %}
-            <span class="marquee-text">Welcome to the OCLA E-Library Database! Start by searching the document you want and filter by 
-                selecting the databases between Bills, Acts, Regulations, and more. Note: The IMS are still updating the databases.</span>
+            <span class="marquee-text text-sm">Welcome to the OCLA E-Library Database! Start by searching the document you want and filter by selecting the databases between Bills, Acts, Regulations, and more. Note: The IMS are still updating the databases.</span>
         {% endfor %}
     </div>
-    <div class="search-container">
-        <form method="GET" class="search-form" action="{% url 'documents:document_list' %}">
-            <select name="type">
-                <option value="">All Databases</option>
-                {% if document_types %}
-                    {% for type, name in document_types %}
-                        <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
-                    {% endfor %}
-                {% endif %}
-            </select>
-            <input type="text" name="q" value="{% if search_query is not None %}{{ search_query }}{% else %}{% endif %}" placeholder="Search documents...">
-            
-            <button type="submit">Search</button>
-        </form>
+
+    <div class="search-container bg-white shadow-md py-6">
+        <div class="container mx-auto px-4">
+            <form method="GET" class="search-form flex flex-col sm:flex-row items-center gap-4" action="{% url 'documents:document_list' %}">
+                <select name="type" class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full sm:w-auto">
+                    <option value="">All Databases</option>
+                    {% if document_types %}
+                        {% for type, name in document_types %}
+                            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <input type="text" autofocus name="q" value="{% if search_query is not None %}{{ search_query }}{% else %}{% endif %}" placeholder="Search documents..." class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full sm:flex-1">
+                <button type="submit" class="bg-blue-600 text-white rounded-md px-6 py-2 hover:bg-blue-700 transition duration-200">Search</button>
+            </form>
+        </div>
     </div>
-    {% block content %}
-    {% endblock %}
+
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center text-sm">
+            <div class="flex items-center space-x-4">
+                <a href="https://www.palemene.ws" class="hover:underline" target="_blank" rel="noopener noreferrer">www.palemene.ws</a>
+                <span>|</span>
+                <a href="https://www.facebook.com" class="hover:underline" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <span>|</span>
+                <p>@ 2025 Rights Reserved OCLA ICT
+            </div>
+            <p>Version 1.0</p>
+        </div>
+    </footer>
+
 </body>
 </html>

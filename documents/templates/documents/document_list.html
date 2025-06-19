@@ -4,82 +4,116 @@
 {% block title %}Document List{% endblock %}
 
 {% block content %}
-<div class="filters">
-    <div class="found">
-    {% if documents %}
-        <p>Files Found: {{ documents.paginator.count }}</p>
-        {% for document in documents %}
-    </div>
-    <form method="GET" action="{% url 'documents:document_list' %}">
-        <input type="hidden" name="q" value="{{ search_query|default:'' }}">
-        <select name="type" hidden>
-            <option value="">All Types</option>
-            {% for type, name in document_types %}
-                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
-            {% endfor %}
-        </select>
-        
-        <select name="letter">
-            <option value="">All Letters</option>
-            {% for letter in letters %}
-                <option value="{{ letter }}" {% if selected_letter == letter %}selected{% endif %}>{{ letter }}</option>
-            {% endfor %}
-        </select>
-        <select name="year">
-            <option value="">All Years</option>
-            {% for year in years %}
-                <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
-            {% endfor %}
-        </select>
-        <select name="month">
-            <option value="">All Months</option>
-            {% for month in months %}
-                <option value="{{ month.number }}" {% if selected_month == month.number %}selected{% endif %}>{{ month.name }}</option>
-            {% endfor %}
-        </select>
-        {% if selected_month %}
-            <select name="day">
-                <option value="">All Days</option>
-                {% for day in days %}
-                    <option value="{{ day }}" {% if selected_day == day %}selected{% endif %}>{{ day }}</option>
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Header and Filters -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-semibold text-gray-800">Apply Filters</h1>
+            {% if documents %}
+                <p class="text-gray-600">Files Found: {{ documents.paginator.count }}</p>
+            {% endif %}
+        </div>
+
+        <form method="GET" action="{% url 'documents:document_list' %}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <input type="hidden" name="q" value="{{ search_query|default:'' }}">
+            <select name="type" class="hidden">
+                <option value="">All Types</option>
+                {% for type, name in document_types %}
+                    <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ name }}</option>
                 {% endfor %}
             </select>
-        {% endif %}
-        <button type="submit">Filter</button>
-    </form>
-</div>
 
-<div class="document-list">
-            <div class="document-item">
-                <h3><a href="{% url 'documents:document_view' document.pk %}">{{ document.title }}</a></h3>
-                <p>Type: {{ document.get_document_type_display }}</p>
-                <p>Year: {{ document.year }}</p>
-                {% if document.pdf_file %}
-                    <div class="document-actions">
-                        <a href="{% url 'documents:document_view' document.id %}" class="btn btn-view">View Document</a>
-                        <a href="{{ document.pdf_file.url }}" download class="btn btn-download">Download PDF</a>
+            <select name="letter" class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+                <option value="">All Letters</option>
+                {% for letter in letters %}
+                    <option value="{{ letter }}" {% if selected_letter == letter %}selected{% endif %}>{{ letter }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="year" class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+                <option value="">All Years</option>
+                {% for year in years %}
+                    <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="month" class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+                <option value="">All Months</option>
+                {% for month in months %}
+                    <option value="{{ month.number }}" {% if selected_month == month.number %}selected{% endif %}>{{ month.name }}</option>
+                {% endfor %}
+            </select>
+
+            {% if selected_month %}
+                <select name="day" class="border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+                    <option value="">All Days</option>
+                    {% for day in days %}
+                        <option value="{{ day }}" {% if selected_day == day %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            <button type="submit" class="bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700 transition duration-200">Apply Filters</button>
+        </form>
+    </div>
+
+    <!-- Document List -->
+    <div class="grid grid-cols-1 gap-6">
+        {% if documents %}
+            {% for document in documents %}
+                <div class="bg-gray-400 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
+                    <h3 class="text-lg font-medium text-blue-800 mb-2">
+                        <h3 class="text-blue-800 font-medium text-lg">{{ document.title }}</h3>
+                        <a href="#" onclick="openDocumentView('{% url 'documents:document_view' document.pk %}'); return false;">
+                      
+                    </h3>
+                    <div class="text-sm text-white space-y-1">
+                        <p><span class="font-semibold">Type:</span> {{ document.get_document_type_display }}</p>
+                        <p><span class="font-semibold">Year:</span> {{ document.year }}</p>
                     </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No documents found.</p>
-    {% endif %}
-</div>
-
-<div class="pagination">
-    {% if documents.has_previous %}
-        <a href="?page={{ documents.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}">Previous</a>
-    {% endif %}
-    {% for num in documents.paginator.page_range %}
-        {% if documents.number == num %}
-            <span class="current">{{ num }}</span>
+                    {% if document.pdf_file %}
+                        <div class="mt-4 flex space-x-4">
+                            <a href="{% url 'documents:document_view' document.id %}" class="inline-block bg-gray-100 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-200 transition duration-200">View Document</a>
+                            <a href="{{ document.pdf_file.url }}" download class="inline-block bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700 transition duration-200">Download PDF</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
         {% else %}
-            <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}">{{ num }}</a>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <p class="text-gray-600">No documents found.</p>
+            </div>
         {% endif %}
-    {% endfor %}
-    {% if documents.has_next %}
-        <a href="?page={{ documents.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}">Next</a>
+    </div>
+
+    <!-- Page content -->
+    {% if documents %}
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                {% if documents.has_previous %}
+                    <a href="?page={{ documents.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-l-md hover:bg-gray-200">Previous</a>
+                {% endif %}
+
+                {% for num in documents.paginator.page_range %}
+                    {% if documents.number == num %}
+                        <span class="px-4 py-2 bg-blue-600 text-white">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected_type }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}" class="px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if documents.has_next %}
+                    <a href="?page={{ documents.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_type %}&type={{ selected }}{% endif %}{% if selected_letter %}&letter={{ selected_letter }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_day %}&day={{ selected_day }}{% endif %}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200">Next</a>
+                {% endif %}
+            </nav>
+        </div>
     {% endif %}
 </div>
+<script>
+function openDocumentView(url) {
+    window.open(url, 'documentView', 'width=800,height=600,menubar=no,toolbar=no,location=no,status=no');
+}
+</script>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
 {% endblock %}

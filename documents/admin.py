@@ -1,57 +1,40 @@
 from django.contrib import admin
+from .models import Document
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from .models import Document
+from import_export.fields import Field
 from django.utils.html import format_html
 
 class DocumentResource(resources.ModelResource):
+    title = Field(attribute='title', column_name='title')
+    content = Field(attribute='content', column_name='content')
+    document_type = Field(attribute='document_type', column_name='document_type')
+    date = Field(attribute='date', column_name='date')
+    pdf_file = Field(attribute='pdf_file', column_name='pdf_file')
+    pdf_file_samoan = Field(attribute='pdf_file_samoan', column_name='pdf_file_samoan')
+    
     class Meta:
         model = Document
-        fields = ('id', 'title', 'document_type', 'date', 'content', 'pdf_file')
-        import_id_fields = ('id',)
+        fields = ('title', 'content', 'document_type', 'date', 'pdf_file', 'pdf_file_samoan')
+        import_id_fields = ('title',)
         skip_unchanged = True
         report_skipped = True
 
 @admin.register(Document)
 class DocumentAdmin(ImportExportModelAdmin):
     resource_class = DocumentResource
-    list_display = ('title', 'document_type', 'date', 'created_at', 'pdf_link')
+    list_display = ('title', 'document_type','date', 'pdf_file_link', 'pdf_file_samoan_link')
     list_filter = ('document_type', 'date')
     search_fields = ('title', 'content')
-    ordering = ('-date', 'title')
-    date_hierarchy = 'created_at'
-    fields = ('title', 'document_type', 'date','content', 'pdf_file')
-    change_form_template = 'admin/documents/document/change_form.html'
-
-    def pdf_link(self, obj):
+    
+    def pdf_file_link(self, obj):
         if obj.pdf_file:
-            return format_html(
-                '''
-                <a href="{}" target="_blank">View PDF</a> | 
-                <button type="button" onclick="togglePDF('pdf-viewer-{}', this)">Open Document</button>
-                <div id="pdf-viewer-{}" style="display:none; margin-top:10px;">
-                    <iframe src="{}" width="100%" height="400px"></iframe>
-                </div>
-                ''',
-                obj.pdf_file.url, obj.id, obj.id, obj.pdf_file.url
-            )
-        return 'No PDF'
-    pdf_link.short_description = 'PDF'
-
-    class Media:
-        js = (
-            '''
-            <script>
-            function togglePDF(viewerId, button) {
-                var viewer = document.getElementById(viewerId);
-                if (viewer.style.display === 'none') {
-                    viewer.style.display = 'block';
-                    button.textContent = 'Close Document';
-                } else {
-                    viewer.style.display = 'none';
-                    button.textContent = 'Open Document';
-                }
-            }
-            </script>
-            ''',
-        )
+            return format_html('<a href="{}" target="_blank">View English PDF</a>', obj.pdf_file.url)
+        return "No English PDF"
+    pdf_file_link.short_description = 'English PDF'
+    
+    def pdf_file_samoan_link(self, obj):
+        if obj.pdf_file_samoan:
+            return format_html('<a href="{}" target="_blank">View Samoan PDF</a>', obj.pdf_file_samoan.url)
+        return "No Samoan PDF"
+    pdf_file_samoan_link.short_description = 'Samoan PDF'
