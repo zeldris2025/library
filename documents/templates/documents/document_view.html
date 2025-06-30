@@ -18,36 +18,50 @@
                 </object>
             </div>
             <div class="document-actions flex space-x-4">
-                <button class="btn btn-toggle-pdf bg-gray-100 text-gray-700 rounded-md px-6 py-2 hover:bg-gray-200 transition duration-200"" onclick="togglePDF('{{ document.pdf_file.url }}', '{{ document.pdf_file_samoan.url }}', this)">
+                {% if document.pdf_file_samoan %}
+                <button class="btn btn-toggle-pdf bg-gray-100 text-gray-700 rounded-md px-6 py-2 hover:bg-gray-200 transition duration-200" onclick="togglePDF('{{ document.pdf_file.url }}', '{{ document.pdf_file_samoan.url }}', this)">
                     Switch to Samoan PDF
                 </button>
+                {% else %}
+                <button class="btn btn-toggle-pdf bg-gray-100 text-gray-400 rounded-md px-6 py-2 cursor-not-allowed" disabled>
+                    Samoan PDF Not Available
+                </button>
+                {% endif %}
                 <button onclick="alert('Press Ctrl+F (or Cmd+F on Mac) to search the PDF content.')" class="bg-gray-100 text-gray-700 rounded-md px-6 py-2 hover:bg-gray-200 transition duration-200">Search PDF</button>
-                <a href="{{ document.pdf_file.url }}" download class="bg-blue-600 text-white rounded-md px-6 py-2 hover:bg-blue-700 transition duration-200">Download PDF</a>
+                <a id="download-pdf-link" href="{{ document.pdf_file.url }}" download class="bg-blue-600 text-white rounded-md px-6 py-2 hover:bg-blue-700 transition duration-200">Download PDF</a>
+                <script>
+                // Update download link when toggling PDF
+                function togglePDF(englishUrl, samoanUrl, button) {
+                    const viewer = document.querySelector('.pdf-viewer object');
+                    const embed = document.querySelector('.pdf-viewer embed');
+                    const downloadLink = document.getElementById('download-pdf-link');
+                    const currentSrc = viewer.getAttribute('data');
+                    
+                    if (currentSrc === englishUrl) {
+                        viewer.setAttribute('data', samoanUrl);
+                        embed.setAttribute('src', samoanUrl);
+                        button.textContent = 'Switch to English PDF';
+                        if (downloadLink) {
+                            downloadLink.setAttribute('href', samoanUrl);
+                            downloadLink.setAttribute('download', samoanUrl.split('/').pop());
+                        }
+                    } else {
+                        viewer.setAttribute('data', englishUrl);
+                        embed.setAttribute('src', englishUrl);
+                        button.textContent = 'Switch to Samoan PDF';
+                        if (downloadLink) {
+                            downloadLink.setAttribute('href', englishUrl);
+                            downloadLink.setAttribute('download', englishUrl.split('/').pop());
+                        }
+                    }
+                }
+                </script>
                 <a href="{% url 'documents:document_list' %}" class="bg-gray-100 text-gray-700 rounded-md px-6 py-2 hover:bg-gray-200 transition duration-200">Back to List</a>
             </div>
         {% else %}
-            <p class="text-red-600 mb-4">No PDF file associated with this document.</p>
-            <div class="document-actions">
-                <a href="{% url 'documents:document_list' %}" class="bg-gray-100 text-gray-700 rounded-md px-6 py-2 hover:bg-gray-200 transition duration-200">Back to List</a>
-            </div>
+            <p class="text-red-600">No PDF file available for this document.</p>
         {% endif %}
-        <script>
-        function togglePDF(englishUrl, samoanUrl, button) {
-            const viewer = document.querySelector('.pdf-viewer object');
-            const embed = document.querySelector('.pdf-viewer embed');
-            const currentSrc = viewer.getAttribute('data');
-            
-            if (currentSrc === englishUrl) {
-                viewer.setAttribute('data', samoanUrl);
-                embed.setAttribute('src', samoanUrl);
-                button.textContent = 'Switch to English PDF';
-            } else {
-                viewer.setAttribute('data', englishUrl);
-                embed.setAttribute('src', englishUrl);
-                button.textContent = 'Switch to Samoan PDF';
-            }
-        }
-        </script>
+      
     </div>
 </div>
 {% endblock %}
