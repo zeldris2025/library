@@ -58,15 +58,14 @@
     </div>
 
     <!-- Document List -->
+    {% comment %} Enlarge when I hover over the document {% endcomment %}
+
     <div class="grid grid-cols-1 gap-6">
         {% if documents %}
             {% for document in documents %}
-                <div class="bg-gray-400 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
-                    <h3 class="text-lg font-medium text-blue-800 mb-2">
-                        <h3 class="text-blue-800 font-medium text-lg">{{ document.title }}</h3>
-                        <a href="#" onclick="openDocumentView('{% url 'documents:document_view' document.pk %}'); return false;">
-                      
-                    </h3>
+                <div class="bg-gray-400 rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200 transform hover:scale-105">
+                    <h3 class="text-blue-800 font-medium text-lg">{{ document.title }}</h3>
+                    <a href="#" onclick="openDocumentView('{% url 'documents:document_view' document.pk %}'); return false;"></a>
                     <div class="text-sm text-white space-y-1">
                         <p><span class="font-semibold">Type:</span> {{ document.get_document_type_display }}</p>
                         <p><span class="font-semibold">Year:</span> {{ document.year }}</p>
