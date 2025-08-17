@@ -1,18 +1,15 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 import PyPDF2
+from PyPDF2 import PdfReader
 import os
 
 def validate_pdf(file):
     if not file.name.lower().endswith('.pdf'):
         raise ValidationError('File must be a PDF.')
     try:
-        reader = PyPDF2.PdfReader(file)
-        text = ''
-        for page in reader.pages:
-            text += page.extract_text() or ''
-        if not text.strip():
-            raise ValidationError('PDF must contain extractable text (not scanned).')
+        reader = PdfReader(file)
+        # Simply attempt to read the PDF to ensure it's valid; no text extraction check
     except Exception as e:
         raise ValidationError(f'Invalid PDF: {str(e)}')
 
