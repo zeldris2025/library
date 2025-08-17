@@ -68,7 +68,13 @@
                     <a href="#" onclick="openDocumentView('{% url 'documents:document_view' document.pk %}'); return false;"></a>
                     <div class="text-sm text-white space-y-1">
                         <p><span class="font-semibold">Type:</span> {{ document.get_document_type_display }}</p>
-                        <p><span class="font-semibold">Year:</span> {{ document.year }}</p>
+                        <p><span class="font-semibold">Date:</span>
+                            {% if document.date %}
+                                {{ document.date|date:"Y-m-d" }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </p>
                     </div>
                     {% if document.pdf_file %}
                         <div class="mt-4 flex space-x-4">

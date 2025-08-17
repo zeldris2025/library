@@ -13,11 +13,14 @@
             overflow: hidden;
             white-space: nowrap;
             position: relative;
+            background: linear-gradient(to right,rgb(31, 65, 138), #f87171); /* Refined red gradient */
         }
         .marquee-text {
             display: inline-block;
             animation: marquee 20s linear infinite;
             padding-right: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
         @keyframes marquee {
             0% { transform: translateX(100%); }
@@ -28,23 +31,94 @@
         }
         /* Header gradient */
         .header-gradient {
-            {% comment %} background: linear-gradient(to right,rgb(133, 0, 0),rgb(241, 130, 130)); {% endcomment %}
+            background: linear-gradient(to right,rgb(31, 65, 138), #f87171); /* Refined red gradient */
+            transition: all 0.3s ease;
+        }
+        /* Navigation link hover effect */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ffffff;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        /* Hamburger menu icon */
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #ffffff;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        /* Mobile menu toggle */
+        #mobile-menu:checked ~ .mobile-menu {
+            max-height: 400px;
+            opacity: 1;
+        }
+        .mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        /* Shadow effect for header */
+        .header-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
     </style>
 </head>
-<body class="bg-white text-white py-4">
-    <header class="header-gradient text-black shadow-lg">
-        <div class="container mx-auto px-4 py-6 flex flex-col items-center">
-            <img src="{% static 'images/Palemene_logo_3.png' %}" alt="OCLA Logo" class="h-20 w-auto mb-2">
-            <h1 class="text-3xl font-extrabold tracking-tight">OCLA E-Library Database</h1>
+<body class="bg-white text-gray-900 py-4">
+    <header class="header-gradient text-white sticky top-0 z-50 header-shadow">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Title -->
+                <div class="flex items-center space-x-4">
+                    <img src="{% static 'images/Palemene_logo_3.png' %}" alt="OCLA Logo" class="h-16 w-auto">
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">OCLA E-Library Database</h1>
+                </div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'documents:document_list' %}" class="nav-link text-white hover:text-gray-200 font-medium">Home</a>
+                    <a href="#" class="nav-link text-white hover:text-gray-200 font-medium">Submit Recommendation</a>
+                </nav>
+                <!-- Hamburger Menu for Mobile -->
+                <div class="md:hidden">
+                    <label for="mobile-menu" class="cursor-pointer">
+                        <div class="hamburger">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <!-- Mobile Navigation -->
+            <input type="checkbox" id="mobile-menu" class="hidden">
+            <nav class="mobile-menu md:hidden flex flex-col space-y-4 mt-4 bg-white text-gray-900 p-4 rounded-md shadow-lg">
+                <a href="{% url 'documents:document_list' %}" class="text-gray-900 hover:text-blue-600 font-medium">Home</a>
+                <a href="#" class="text-gray-900 hover:text-blue-600 font-medium">Bills</a>
+                <a href="#" class="text-gray-900 hover:text-blue-600 font-medium">Acts</a>
+                <a href="#" class="text-gray-900 hover:text-blue-600 font-medium">Regulations</a>
+                <a href="#" class="text-gray-900 hover:text-blue-600 font-medium">Contact</a>
+            </nav>
         </div>
     </header>
 
-    <div class="marquee-container bg-gray-800 text-white py-4">
+    <div class="marquee-container text-white py-3">
         {% for ad in ads %}
-            <span class="marquee-text text-sm">{{ ad.text }}</span>
+            <span class="marquee-text">{{ ad.text }}</span>
         {% empty %}
-            <span class="marquee-text text-sm">Welcome to the OCLA E-Library Database! Start by searching the document you want and filter by selecting the databases between Bills, Acts, Regulations, and more. Note: The IMS are still updating the databases.</span>
+            <span class="marquee-text">Welcome to the OCLA E-Library Database! Start by searching the document you want and filter by selecting the databases between Bills, Acts, Regulations, and more. Note: The IMS are still updating the databases.</span>
         {% endfor %}
     </div>
 
@@ -77,11 +151,10 @@
                 <span>|</span>
                 <a href="https://www.facebook.com" class="hover:underline" target="_blank" rel="noopener noreferrer">Facebook</a>
                 <span>|</span>
-                <p>@ 2025 Rights Reserved OCLA ICT
+                <p>@ 2025 Rights Reserved OCLA ICT</p>
             </div>
             <p>Version 1.0</p>
         </div>
     </footer>
-
 </body>
 </html>

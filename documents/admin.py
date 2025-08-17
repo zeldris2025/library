@@ -20,21 +20,20 @@ class DocumentResource(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
 
-@admin.register(Document)
 class DocumentAdmin(ImportExportModelAdmin):
     resource_class = DocumentResource
-    list_display = ('title', 'document_type','date', 'pdf_file_link', 'pdf_file_samoan_link')
-    list_filter = ('document_type', 'date')
-    search_fields = ('title', 'content')
+    list_display = ('title', 'document_type', 'date', 'pdf_file_link', 'pdf_file_samoan_link')
+    search_fields = ('title', 'content', 'document_type')
     
     def pdf_file_link(self, obj):
         if obj.pdf_file:
-            return format_html('<a href="{}" target="_blank">View English PDF</a>', obj.pdf_file.url)
-        return "No English PDF"
-    pdf_file_link.short_description = 'English PDF'
+            return format_html('<a href="{}" target="_blank">View PDF</a>', obj.pdf_file.url)
+        return "-"
     
     def pdf_file_samoan_link(self, obj):
         if obj.pdf_file_samoan:
             return format_html('<a href="{}" target="_blank">View Samoan PDF</a>', obj.pdf_file_samoan.url)
-        return "No Samoan PDF"
-    pdf_file_samoan_link.short_description = 'Samoan PDF'
+        return "-"
+    
+    pdf_file_link.short_description = 'PDF File'
+    pdf_file_samoan_link.short_description = 'Samoan PDF File'
